@@ -10,7 +10,7 @@ namespace CheckLinkValid
     {
         public const string UserName = "test";
         public const string PassWord = "pcMs3HRWn!uPCg)9RgQHNMNm";
-        public const string Url = "http://blogpp.xyz/wp-admin/edit.php";
+        public const string Url = "http://blogpp.xyz/page/{0}/";
         public const string AdminUrl = "http://blogpp.xyz/wp-admin/edit.php?paged={0}";
 
         public const string RapidgatorUserName = "nguyenan87yb@gmail.com";

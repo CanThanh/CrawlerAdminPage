@@ -31,8 +31,9 @@ namespace CheckLinkValid
 
         private void InitChrome()
         {
-            txtUrl.Text = CommonConstants.Url;
-            browser = new ChromiumWebBrowser(txtUrl.Text);
+            txtUrlAdmin.Text = String.Format(CommonConstants.AdminUrl,1);
+            txtUrl.Text = String.Format(CommonConstants.Url, 1); ;
+            browser = new ChromiumWebBrowser(txtUrlAdmin.Text);
             browser.FrameLoadEnd += chrome_FrameLoadEnd;
             pChrome.Controls.Add(browser);
             browser.Dock = DockStyle.Fill;
@@ -51,14 +52,16 @@ namespace CheckLinkValid
             try
             {
                 int iPageSize = 1;
-                int.TryParse(txtPageSize.Text,out iPageSize);
-                if (txtUrl.Text.Contains("?paged"))
+                int.TryParse(txtPageSizeAdmin.Text,out iPageSize);
+                if (txtUrlAdmin.Text.Contains("?paged"))
                 {
-                    browser.Load(txtUrl.Text);
+                    var domain = txtUrlAdmin.Text.Substring(0, txtUrlAdmin.Text.IndexOf("?paged"));
+                    txtUrlAdmin.Text = domain + "?paged=" + iPageSize;
+                    browser.Load(txtUrlAdmin.Text);
                 }
                 else
                 {
-                    browser.Load(txtUrl.Text + "?paged=" + iPageSize);
+                    browser.Load(txtUrlAdmin.Text + "?paged=" + iPageSize);
                 }
 
                 Thread.Sleep(5000);
@@ -66,8 +69,9 @@ namespace CheckLinkValid
                 ListLinkNotValid.Clear();
                 UrlChecked.Clear();
                 ListFileName.Clear();
+                listBoxLinkNotValid.Items.Clear();
                 lblStartTime.Text = DateTime.Now.ToString();
-                if (!string.IsNullOrEmpty(txtUrl.Text.Trim()))
+                if (!string.IsNullOrEmpty(txtUrlAdmin.Text.Trim()))
                 {
                     var strHtml = GetHTMLFromWebBrowser();
                     HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
@@ -84,7 +88,6 @@ namespace CheckLinkValid
                 }
                 lblEndTime.Text = DateTime.Now.ToString();
                 lblError.Text = ListLinkNotValid.Count + "/" + (ListLinkValid.Count + ListLinkNotValid.Count);
-                listBoxLinkNotValid.Items.Clear();
                 var index = 1;
                 foreach (var item in ListLinkNotValid)
                 {
@@ -215,6 +218,73 @@ namespace CheckLinkValid
                 throw;
             }
             
+        }
+
+        private void btnCheckLink_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                int iPageSize = 1;
+                int.TryParse(txtPageSize.Text, out iPageSize);
+                if (txtUrl.Text.Contains("/page"))
+                {
+                    var domain = txtUrl.Text.Substring(0, txtUrl.Text.IndexOf("/page"));
+                    txtUrl.Text = domain + "/page/" + iPageSize;
+                    browser.Load(txtUrl.Text);
+                }
+                else
+                {
+                    browser.Load(txtUrl.Text + "/page/" + iPageSize);
+                }
+
+                Thread.Sleep(5000);
+                ListLinkValid.Clear();
+                ListLinkNotValid.Clear();
+                UrlChecked.Clear();
+                ListFileName.Clear();
+                listBoxLinkNotValid.Items.Clear();
+                lblStartTime.Text = DateTime.Now.ToString();
+                if (!string.IsNullOrEmpty(txtUrl.Text.Trim()))
+                {
+                    var strHtml = GetHTMLFromWebBrowser();
+                    HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
+                    doc.LoadHtml(strHtml);
+                    if (doc != null && doc.DocumentNode != null)
+                    {
+                        var listItem = doc.DocumentNode.SelectNodes("//h2[@class='entry-title']//a");
+                        foreach (var item in listItem)
+                        {
+                            var url = item.GetAttributeValue("href", String.Empty);
+                            CheckLinkValid(url);
+                        }
+                    }
+                }
+                lblEndTime.Text = DateTime.Now.ToString();
+                lblError.Text = ListLinkNotValid.Count + "/" + (ListLinkValid.Count + ListLinkNotValid.Count);
+                var index = 1;
+                foreach (var item in ListLinkNotValid)
+                {
+                    listBoxLinkNotValid.Items.Add(index++ + "\tId: " + item.ItemId + "\tRapidgator file name: " + item.NameLinkCheck);
+                }
+                ListFileName.AddRange(ListLinkNotValid.Select(x => x.NameLinkCheck).ToList());
+                MessageBox.Show("Đã hoàn thành");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Có lỗi xảy ra. Vui lòng kiểm tra lại");
+            }
+        }
+
+        private void tabControl1_Selected(object sender, TabControlEventArgs e)
+        {
+            if(tabControl1.SelectedIndex == 2)
+            {
+                pChrome.Visible = false;
+            }
+            else
+            {
+                pChrome.Visible = true;
+            }
         }
     }
 }
