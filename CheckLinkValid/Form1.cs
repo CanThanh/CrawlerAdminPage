@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -19,6 +20,7 @@ namespace CheckLinkValid
         private List<ValidateLink> ListLinkValid;
         private List<ValidateLink> ListLinkNotValid;
         private List<string> UrlChecked;
+        private List<string> ListFileName;
         private ChromiumWebBrowser browser;
         public Form1()
         {
@@ -41,6 +43,7 @@ namespace CheckLinkValid
             ListLinkValid = new List<ValidateLink>();
             ListLinkNotValid = new List<ValidateLink>();
             UrlChecked = new List<string>();
+            ListFileName = new List<string>();
         }
 
         private void btnCheck_Click(object sender, EventArgs e)
@@ -62,6 +65,7 @@ namespace CheckLinkValid
                 ListLinkValid.Clear();
                 ListLinkNotValid.Clear();
                 UrlChecked.Clear();
+                ListFileName.Clear();
                 lblStartTime.Text = DateTime.Now.ToString();
                 if (!string.IsNullOrEmpty(txtUrl.Text.Trim()))
                 {
@@ -86,6 +90,7 @@ namespace CheckLinkValid
                 {
                     listBoxLinkNotValid.Items.Add(index++ + "\tId: " + item.ItemId + "\tRapidgator file name: " + item.NameLinkCheck);
                 }
+                ListFileName.AddRange(ListLinkNotValid.Select(x => x.NameLinkCheck).ToList());
                 MessageBox.Show("Đã hoàn thành");
             }
             catch (Exception ex)
@@ -109,17 +114,7 @@ namespace CheckLinkValid
                         itemCheck.ItemLink = url;
                         var itemId = doc.DocumentNode.SelectSingleNode("//article").GetAttributeValue("id", "0");
                         itemCheck.ItemId = int.Parse(itemId.Replace("post-", ""));
-                        itemCheck.ItemName = doc.DocumentNode.SelectSingleNode("//h1[@class='entry-title']").InnerHtml;
-                        var linkPrevious = doc.DocumentNode.SelectSingleNode("//div[@class='nav-previous']//a");
-                        if (linkPrevious != null)
-                        {
-                            itemCheck.LinkPrevious = linkPrevious.GetAttributeValue("href", "Not found");
-                        }
-                        var linkNext = doc.DocumentNode.SelectSingleNode("//div[@class='nav-next']//a");
-                        if (linkNext != null)
-                        {
-                            itemCheck.LinkNext = linkNext.GetAttributeValue("href", "Not found");
-                        }
+                        itemCheck.ItemName = doc.DocumentNode.SelectSingleNode("//h1[@class='entry-title ']").InnerHtml;
                         var tagA = doc.DocumentNode.SelectSingleNode("//div[@class='entry-content']//a");
                         itemCheck.HrefLinkCheck = tagA.GetAttributeValue("href", "Not found");
                         itemCheck.NameLinkCheck = tagA.InnerHtml;
@@ -161,19 +156,65 @@ namespace CheckLinkValid
 
         private void btnProcessRapidgator_Click(object sender, EventArgs e)
         {
-            var listFileName = ListLinkNotValid.Select(x => x.NameLinkCheck).ToList();
-            if (listFileName.Count > 0)
+            if (ListFileName.Count > 0)
             {
                 ProcessRapidgator processRapidgator = new ProcessRapidgator();
-                processRapidgator.SetListFileName(listFileName);
+                processRapidgator.SetListFileName(ListFileName);
                 processRapidgator.TopMost = true;
                 processRapidgator.Show();
             }
             else
             {
-                MessageBox.Show("Không có file nào bị lỗi.");
+                MessageBox.Show("Không có file nào.");
             }
 
+        }
+
+        private void btnLoadFileFromText_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                OpenFileDialog openFileDialog = new OpenFileDialog
+                {
+                    InitialDirectory = @"D:\",
+                    Title = "Browse Text Files",
+
+                    CheckFileExists = true,
+                    CheckPathExists = true,
+
+                    DefaultExt = "txt",
+                    Filter = "txt files (*.txt)|*.txt",
+                    FilterIndex = 2,
+                    RestoreDirectory = true,
+
+                    ReadOnlyChecked = true,
+                    ShowReadOnly = true
+                };
+                ListFileName.Clear();
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    var fileStream = new FileStream(openFileDialog.FileName, FileMode.Open, FileAccess.Read);
+                    listBoxLinkNotValid.Items.Clear();
+                    var index = 1;
+                    using (var streamReader = new StreamReader(fileStream, Encoding.UTF8))
+                    {
+                        string line;
+                        while ((line = streamReader.ReadLine()) != null)
+                        {
+                            if (!String.IsNullOrEmpty(line))
+                            {
+                                ListFileName.Add(line);
+                                listBoxLinkNotValid.Items.Add(index++ + "\tRapidgator file name: " + line);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            
         }
     }
 }

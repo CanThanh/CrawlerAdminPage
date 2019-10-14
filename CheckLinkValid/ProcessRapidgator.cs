@@ -65,6 +65,8 @@ namespace CheckLinkValid
         {
             try
             {
+                browser.Load(CommonConstants.RapidgatorMyFileUrl);
+                Thread.Sleep(5000);
                 foreach (var item in ListFileName)
                 {
                     ProcessFileNotValid(item);
@@ -83,8 +85,6 @@ namespace CheckLinkValid
         {
             try
             {
-                browser.Load(CommonConstants.RapidgatorMyFileUrl);
-                Thread.Sleep(5000);
                 browser.EvaluateScriptAsync("document.querySelector('input[class=find-text-box]').value='" + fileName + "';");
                 browser.ExecuteScriptAsync("findFile();");
                 Thread.Sleep(5000);
@@ -99,7 +99,9 @@ namespace CheckLinkValid
                         var itemId = tableRows[1].QuerySelector("td > input.select-checkbox").Attributes["id"].Value;
                         browser.ExecuteScriptAsync("document.getElementById('" + itemId + "').click();");
                         browser.ExecuteScriptAsync("checkBeforeMove();");
+                        Thread.Sleep(3000);
                         browser.ExecuteScriptAsync("paste();");
+                        Thread.Sleep(1000);
                     }
                     else
                     {
@@ -109,7 +111,9 @@ namespace CheckLinkValid
                             var itemId = tableRows[0].QuerySelector("td > input.select-checkbox").Attributes["id"].Value;
                             browser.ExecuteScriptAsync("document.getElementById('" + itemId + "').click();");
                             browser.ExecuteScriptAsync("checkBeforeCopy();");
+                            Thread.Sleep(3000);
                             browser.ExecuteScriptAsync("copyPaste();");
+                            Thread.Sleep(1000);
                         }
                         else
                         {
