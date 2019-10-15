@@ -34,7 +34,7 @@ namespace CheckLinkValid
             txtUrlAdmin.Text = String.Format(CommonConstants.AdminUrl,1);
             txtUrl.Text = String.Format(CommonConstants.Url, 1); ;
             browser = new ChromiumWebBrowser(txtUrlAdmin.Text);
-            browser.FrameLoadEnd += chrome_FrameLoadEnd;
+            //browser.FrameLoadEnd += chrome_FrameLoadEnd;
             pChrome.Controls.Add(browser);
             browser.Dock = DockStyle.Fill;
         }

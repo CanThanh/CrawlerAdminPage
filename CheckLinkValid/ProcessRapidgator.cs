@@ -99,9 +99,9 @@ namespace CheckLinkValid
                         var itemId = tableRows[1].QuerySelector("td > input.select-checkbox").Attributes["id"].Value;
                         browser.ExecuteScriptAsync("document.getElementById('" + itemId + "').click();");
                         browser.ExecuteScriptAsync("checkBeforeMove();");
-                        Thread.Sleep(3000);
+                        Thread.Sleep(5000);
                         browser.ExecuteScriptAsync("paste();");
-                        Thread.Sleep(1000);
+                        Thread.Sleep(5000);
                     }
                     else
                     {
@@ -111,9 +111,9 @@ namespace CheckLinkValid
                             var itemId = tableRows[0].QuerySelector("td > input.select-checkbox").Attributes["id"].Value;
                             browser.ExecuteScriptAsync("document.getElementById('" + itemId + "').click();");
                             browser.ExecuteScriptAsync("checkBeforeCopy();");
-                            Thread.Sleep(3000);
+                            Thread.Sleep(5000);
                             browser.ExecuteScriptAsync("copyPaste();");
-                            Thread.Sleep(1000);
+                            Thread.Sleep(5000);
                         }
                         else
                         {
