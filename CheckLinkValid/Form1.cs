@@ -21,6 +21,7 @@ namespace CheckLinkValid
         private List<ValidateLink> ListLinkNotValid;
         private List<string> UrlChecked;
         private List<string> ListFileName;
+        private List<string> ListLinkUrl;
         private ChromiumWebBrowser browser;
         public Form1()
         {
@@ -45,6 +46,7 @@ namespace CheckLinkValid
             ListLinkNotValid = new List<ValidateLink>();
             UrlChecked = new List<string>();
             ListFileName = new List<string>();
+            ListLinkUrl = new List<string>();
         }
 
         private void btnCheck_Click(object sender, EventArgs e)
@@ -55,6 +57,7 @@ namespace CheckLinkValid
                 ListLinkNotValid.Clear();
                 UrlChecked.Clear();
                 ListFileName.Clear();
+                ListLinkUrl.Clear();
                 listBoxLinkNotValid.Items.Clear();
                 lblStartTime.Text = DateTime.Now.ToString();
                 List<string> ListPageIndex = txtPageIndexAdmin.Text.Split(',').ToList();
@@ -76,8 +79,8 @@ namespace CheckLinkValid
                         }
                         GetRapidgatorFileName(strUrl, "//div[@class='row-actions']//span[@class='view']//a");
                     }
-
-                }               
+                }
+                ListFileName.AddRange(ListLinkNotValid.Select(x => x.NameLinkCheck).ToList());
                 MessageBox.Show("Đã hoàn thành");
             }
             catch (Exception ex)
@@ -213,6 +216,7 @@ namespace CheckLinkValid
                 UrlChecked.Clear();
                 ListFileName.Clear();
                 listBoxLinkNotValid.Items.Clear();
+                ListLinkUrl.Clear();
                 lblStartTime.Text = DateTime.Now.ToString();
                 List<string> ListPageIndex = txtPageIndex.Text.Split(',').ToList();
                 foreach (var item in ListPageIndex)
@@ -233,8 +237,8 @@ namespace CheckLinkValid
                         }
                         GetRapidgatorFileName(strUrl, "//h2[@class='entry-title']//a");
                     }
-
                 }
+                ListFileName.AddRange(ListLinkNotValid.Select(x => x.NameLinkCheck).ToList());
                 MessageBox.Show("Đã hoàn thành");
             }
             catch (Exception ex)
@@ -259,8 +263,13 @@ namespace CheckLinkValid
         {
             browser.Load(strUrl);
             Thread.Sleep(5000);
-
-           if (!string.IsNullOrEmpty(strUrl))
+            var address = browser.Address;
+            if (ListLinkUrl.Contains(address))
+            {
+                return;
+            }
+            ListLinkUrl.Add(address);
+            if (!string.IsNullOrEmpty(strUrl))
             {
                 var strHtml = GetHTMLFromWebBrowser();
                 HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
@@ -282,7 +291,6 @@ namespace CheckLinkValid
             {
                 listBoxLinkNotValid.Items.Add(index++ + "\tId: " + item.ItemId + "\tRapidgator file name: " + item.NameLinkCheck);
             }
-            ListFileName.AddRange(ListLinkNotValid.Select(x => x.NameLinkCheck).ToList());
         }
     }
 }
