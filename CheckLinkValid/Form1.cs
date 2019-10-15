@@ -51,49 +51,33 @@ namespace CheckLinkValid
         {
             try
             {
-                int iPageSize = 1;
-                int.TryParse(txtPageSizeAdmin.Text,out iPageSize);
-                if (txtUrlAdmin.Text.Contains("?paged"))
-                {
-                    var domain = txtUrlAdmin.Text.Substring(0, txtUrlAdmin.Text.IndexOf("?paged"));
-                    txtUrlAdmin.Text = domain + "?paged=" + iPageSize;
-                    browser.Load(txtUrlAdmin.Text);
-                }
-                else
-                {
-                    browser.Load(txtUrlAdmin.Text + "?paged=" + iPageSize);
-                }
-
-                Thread.Sleep(5000);
                 ListLinkValid.Clear();
                 ListLinkNotValid.Clear();
                 UrlChecked.Clear();
                 ListFileName.Clear();
                 listBoxLinkNotValid.Items.Clear();
                 lblStartTime.Text = DateTime.Now.ToString();
-                if (!string.IsNullOrEmpty(txtUrlAdmin.Text.Trim()))
+                List<string> ListPageIndex = txtPageIndexAdmin.Text.Split(',').ToList();
+                foreach (var item in ListPageIndex)
                 {
-                    var strHtml = GetHTMLFromWebBrowser();
-                    HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
-                    doc.LoadHtml(strHtml);
-                    if (doc != null && doc.DocumentNode != null)
+                    int iPageSize = 0;
+                    int.TryParse(item, out iPageSize);
+                    if (iPageSize > 0)
                     {
-                        var listItem = doc.DocumentNode.SelectNodes("//div[@class='row-actions']//span[@class='view']//a");
-                        foreach (var item in listItem)
+                        string strUrl = String.Empty;
+                        if (txtUrlAdmin.Text.Contains("?paged"))
                         {
-                            var url = item.GetAttributeValue("href", String.Empty);
-                            CheckLinkValid(url);
+                            var domain = txtUrlAdmin.Text.Substring(0, txtUrlAdmin.Text.IndexOf("?paged"));
+                            strUrl = domain + "?paged=" + iPageSize;
                         }
+                        else
+                        {
+                            strUrl = txtUrlAdmin.Text + "?paged=" + iPageSize;
+                        }
+                        GetRapidgatorFileName(strUrl, "//div[@class='row-actions']//span[@class='view']//a");
                     }
-                }
-                lblEndTime.Text = DateTime.Now.ToString();
-                lblError.Text = ListLinkNotValid.Count + "/" + (ListLinkValid.Count + ListLinkNotValid.Count);
-                var index = 1;
-                foreach (var item in ListLinkNotValid)
-                {
-                    listBoxLinkNotValid.Items.Add(index++ + "\tId: " + item.ItemId + "\tRapidgator file name: " + item.NameLinkCheck);
-                }
-                ListFileName.AddRange(ListLinkNotValid.Select(x => x.NameLinkCheck).ToList());
+
+                }               
                 MessageBox.Show("Đã hoàn thành");
             }
             catch (Exception ex)
@@ -224,55 +208,39 @@ namespace CheckLinkValid
         {
             try
             {
-                int iPageSize = 1;
-                int.TryParse(txtPageSize.Text, out iPageSize);
-                if (txtUrl.Text.Contains("/page"))
-                {
-                    var domain = txtUrl.Text.Substring(0, txtUrl.Text.IndexOf("/page"));
-                    txtUrl.Text = domain + "/page/" + iPageSize;
-                    browser.Load(txtUrl.Text);
-                }
-                else
-                {
-                    browser.Load(txtUrl.Text + "/page/" + iPageSize);
-                }
-
-                Thread.Sleep(5000);
                 ListLinkValid.Clear();
                 ListLinkNotValid.Clear();
                 UrlChecked.Clear();
                 ListFileName.Clear();
                 listBoxLinkNotValid.Items.Clear();
                 lblStartTime.Text = DateTime.Now.ToString();
-                if (!string.IsNullOrEmpty(txtUrl.Text.Trim()))
+                List<string> ListPageIndex = txtPageIndex.Text.Split(',').ToList();
+                foreach (var item in ListPageIndex)
                 {
-                    var strHtml = GetHTMLFromWebBrowser();
-                    HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
-                    doc.LoadHtml(strHtml);
-                    if (doc != null && doc.DocumentNode != null)
+                    int iPageSize = 0;
+                    int.TryParse(item, out iPageSize);
+                    if (iPageSize > 0)
                     {
-                        var listItem = doc.DocumentNode.SelectNodes("//h2[@class='entry-title']//a");
-                        foreach (var item in listItem)
+                        string strUrl = String.Empty;
+                        if (txtUrl.Text.Contains("/page"))
                         {
-                            var url = item.GetAttributeValue("href", String.Empty);
-                            CheckLinkValid(url);
+                            var domain = txtUrl.Text.Substring(0, txtUrl.Text.IndexOf("/page"));
+                            strUrl = domain + "/page/" + iPageSize;
                         }
+                        else
+                        {
+                            strUrl = txtUrl.Text + "/page/" + iPageSize;
+                        }
+                        GetRapidgatorFileName(strUrl, "//h2[@class='entry-title']//a");
                     }
+
                 }
-                lblEndTime.Text = DateTime.Now.ToString();
-                lblError.Text = ListLinkNotValid.Count + "/" + (ListLinkValid.Count + ListLinkNotValid.Count);
-                var index = 1;
-                foreach (var item in ListLinkNotValid)
-                {
-                    listBoxLinkNotValid.Items.Add(index++ + "\tId: " + item.ItemId + "\tRapidgator file name: " + item.NameLinkCheck);
-                }
-                ListFileName.AddRange(ListLinkNotValid.Select(x => x.NameLinkCheck).ToList());
                 MessageBox.Show("Đã hoàn thành");
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Có lỗi xảy ra. Vui lòng kiểm tra lại");
-            }
+            }           
         }
 
         private void tabControl1_Selected(object sender, TabControlEventArgs e)
@@ -285,6 +253,36 @@ namespace CheckLinkValid
             {
                 pChrome.Visible = true;
             }
+        }
+
+        private void GetRapidgatorFileName(string strUrl, string strXPath)
+        {
+            browser.Load(strUrl);
+            Thread.Sleep(5000);
+
+           if (!string.IsNullOrEmpty(strUrl))
+            {
+                var strHtml = GetHTMLFromWebBrowser();
+                HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
+                doc.LoadHtml(strHtml);
+                if (doc != null && doc.DocumentNode != null)
+                {
+                    var listItem = doc.DocumentNode.SelectNodes(strXPath);
+                    foreach (var item in listItem)
+                    {
+                        var url = item.GetAttributeValue("href", String.Empty);
+                        CheckLinkValid(url);
+                    }
+                }
+            }
+            lblEndTime.Text = DateTime.Now.ToString();
+            lblError.Text = ListLinkNotValid.Count + "/" + (ListLinkValid.Count + ListLinkNotValid.Count);
+            var index = 1;
+            foreach (var item in ListLinkNotValid)
+            {
+                listBoxLinkNotValid.Items.Add(index++ + "\tId: " + item.ItemId + "\tRapidgator file name: " + item.NameLinkCheck);
+            }
+            ListFileName.AddRange(ListLinkNotValid.Select(x => x.NameLinkCheck).ToList());
         }
     }
 }

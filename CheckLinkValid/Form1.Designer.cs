@@ -35,17 +35,17 @@
             this.label2 = new System.Windows.Forms.Label();
             this.btnProcessRapidgator = new System.Windows.Forms.Button();
             this.label7 = new System.Windows.Forms.Label();
-            this.txtPageSizeAdmin = new System.Windows.Forms.TextBox();
+            this.txtPageIndexAdmin = new System.Windows.Forms.TextBox();
             this.btnLoadFileFromText = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.txtUrl = new System.Windows.Forms.TextBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.txtPageSize = new System.Windows.Forms.TextBox();
             this.btnCheckLink = new System.Windows.Forms.Button();
+            this.txtPageIndex = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.txtUrl = new System.Windows.Forms.TextBox();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
             this.lblError = new System.Windows.Forms.Label();
             this.pChrome = new System.Windows.Forms.Panel();
             this.label3 = new System.Windows.Forms.Label();
@@ -55,8 +55,8 @@
             this.lblStartTime = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
-            this.tabPage2.SuspendLayout();
             this.tabPage3.SuspendLayout();
+            this.tabPage2.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnCheckAdmin
@@ -118,18 +118,18 @@
             this.label7.AutoSize = true;
             this.label7.Location = new System.Drawing.Point(380, 21);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(58, 13);
+            this.label7.Size = new System.Drawing.Size(64, 13);
             this.label7.TabIndex = 17;
-            this.label7.Text = "Page Size:";
+            this.label7.Text = "Page Index:";
             // 
-            // txtPageSizeAdmin
+            // txtPageIndexAdmin
             // 
-            this.txtPageSizeAdmin.Location = new System.Drawing.Point(441, 13);
-            this.txtPageSizeAdmin.Name = "txtPageSizeAdmin";
-            this.txtPageSizeAdmin.Size = new System.Drawing.Size(38, 20);
-            this.txtPageSizeAdmin.TabIndex = 18;
-            this.txtPageSizeAdmin.Text = "1";
-            this.txtPageSizeAdmin.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.txtPageIndexAdmin.Location = new System.Drawing.Point(441, 13);
+            this.txtPageIndexAdmin.Name = "txtPageIndexAdmin";
+            this.txtPageIndexAdmin.Size = new System.Drawing.Size(38, 20);
+            this.txtPageIndexAdmin.TabIndex = 18;
+            this.txtPageIndexAdmin.Text = "1";
+            this.txtPageIndexAdmin.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // btnLoadFileFromText
             // 
@@ -157,7 +157,7 @@
             // 
             this.tabPage1.BackColor = System.Drawing.SystemColors.Control;
             this.tabPage1.Controls.Add(this.btnCheckAdmin);
-            this.tabPage1.Controls.Add(this.txtPageSizeAdmin);
+            this.tabPage1.Controls.Add(this.txtPageIndexAdmin);
             this.tabPage1.Controls.Add(this.label1);
             this.tabPage1.Controls.Add(this.label7);
             this.tabPage1.Controls.Add(this.txtUrlAdmin);
@@ -168,22 +168,11 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Url Link Admin";
             // 
-            // tabPage2
-            // 
-            this.tabPage2.BackColor = System.Drawing.Color.Transparent;
-            this.tabPage2.Controls.Add(this.btnLoadFileFromText);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(602, 520);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "File Text";
-            // 
             // tabPage3
             // 
             this.tabPage3.BackColor = System.Drawing.SystemColors.Control;
             this.tabPage3.Controls.Add(this.btnCheckLink);
-            this.tabPage3.Controls.Add(this.txtPageSize);
+            this.tabPage3.Controls.Add(this.txtPageIndex);
             this.tabPage3.Controls.Add(this.label8);
             this.tabPage3.Controls.Add(this.label6);
             this.tabPage3.Controls.Add(this.txtUrl);
@@ -192,41 +181,6 @@
             this.tabPage3.Size = new System.Drawing.Size(602, 50);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Url Link";
-            // 
-            // txtUrl
-            // 
-            this.txtUrl.Location = new System.Drawing.Point(46, 13);
-            this.txtUrl.Name = "txtUrl";
-            this.txtUrl.Size = new System.Drawing.Size(328, 20);
-            this.txtUrl.TabIndex = 21;
-            this.txtUrl.Text = "http://blogpp.xyz/page/1/";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(7, 21);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(23, 13);
-            this.label6.TabIndex = 26;
-            this.label6.Text = "Url:";
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(380, 21);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(58, 13);
-            this.label8.TabIndex = 21;
-            this.label8.Text = "Page Size:";
-            // 
-            // txtPageSize
-            // 
-            this.txtPageSize.Location = new System.Drawing.Point(441, 13);
-            this.txtPageSize.Name = "txtPageSize";
-            this.txtPageSize.Size = new System.Drawing.Size(38, 20);
-            this.txtPageSize.TabIndex = 21;
-            this.txtPageSize.Text = "1";
-            this.txtPageSize.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // btnCheckLink
             // 
@@ -237,6 +191,52 @@
             this.btnCheckLink.Text = "Check Link";
             this.btnCheckLink.UseVisualStyleBackColor = true;
             this.btnCheckLink.Click += new System.EventHandler(this.btnCheckLink_Click);
+            // 
+            // txtPageIndex
+            // 
+            this.txtPageIndex.Location = new System.Drawing.Point(441, 13);
+            this.txtPageIndex.Name = "txtPageIndex";
+            this.txtPageIndex.Size = new System.Drawing.Size(38, 20);
+            this.txtPageIndex.TabIndex = 21;
+            this.txtPageIndex.Text = "1";
+            this.txtPageIndex.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(380, 21);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(64, 13);
+            this.label8.TabIndex = 21;
+            this.label8.Text = "Page Index:";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(7, 21);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(23, 13);
+            this.label6.TabIndex = 26;
+            this.label6.Text = "Url:";
+            // 
+            // txtUrl
+            // 
+            this.txtUrl.Location = new System.Drawing.Point(46, 13);
+            this.txtUrl.Name = "txtUrl";
+            this.txtUrl.Size = new System.Drawing.Size(328, 20);
+            this.txtUrl.TabIndex = 21;
+            this.txtUrl.Text = "http://blogpp.xyz/page/1/";
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.BackColor = System.Drawing.Color.Transparent;
+            this.tabPage2.Controls.Add(this.btnLoadFileFromText);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(602, 50);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "File Text";
             // 
             // lblError
             // 
@@ -318,9 +318,9 @@
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
-            this.tabPage2.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
+            this.tabPage2.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -334,13 +334,13 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button btnProcessRapidgator;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.TextBox txtPageSizeAdmin;
+        private System.Windows.Forms.TextBox txtPageIndexAdmin;
         private System.Windows.Forms.Button btnLoadFileFromText;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.TabPage tabPage3;
-        private System.Windows.Forms.TextBox txtPageSize;
+        private System.Windows.Forms.TextBox txtPageIndex;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox txtUrl;
