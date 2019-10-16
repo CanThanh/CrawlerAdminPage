@@ -160,7 +160,7 @@ namespace CheckLinkValid
             {
                 ProcessRapidgator processRapidgator = new ProcessRapidgator();
                 processRapidgator.SetListFileName(ListFileName);
-                processRapidgator.TopMost = true;
+                //processRapidgator.TopMost = true;
                 processRapidgator.Show();
             }
             else

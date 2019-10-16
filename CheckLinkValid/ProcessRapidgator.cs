@@ -72,7 +72,8 @@ namespace CheckLinkValid
                     ProcessFileNotValid(item);
                 }
 				WriteFile();
-                this.Close();
+                //this.Close();
+                AddListBoxFileNotExist();
                 MessageBox.Show("Đã xử lý xong toàn bộ danh sách file");
             }
             catch (Exception ex)
@@ -152,6 +153,15 @@ namespace CheckLinkValid
                 throw;
             }
 
+        }
+
+        private void AddListBoxFileNotExist()
+        {
+            txtFileNotExist.Text = String.Empty;
+            foreach (var item in ListFileNotFound)
+            {
+                txtFileNotExist.Text += item + "\n";
+            }
         }
     }
 }
