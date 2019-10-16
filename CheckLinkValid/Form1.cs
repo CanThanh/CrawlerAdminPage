@@ -85,7 +85,7 @@ namespace CheckLinkValid
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Có lỗi xảy ra. Vui lòng kiểm tra lại");
+                MessageBox.Show("Có lỗi xảy ra. Vui lòng kiểm tra lại" + ex.Message);
             }                       
         }
 
@@ -253,7 +253,7 @@ namespace CheckLinkValid
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Có lỗi xảy ra. Vui lòng kiểm tra lại");
+                MessageBox.Show("Có lỗi xảy ra. Vui lòng kiểm tra lại" + ex.Message);
             }           
         }
 

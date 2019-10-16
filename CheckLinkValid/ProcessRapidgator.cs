@@ -75,9 +75,9 @@ namespace CheckLinkValid
                 this.Close();
                 MessageBox.Show("Đã xử lý xong toàn bộ danh sách file");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                MessageBox.Show("Có lỗi xảy ra. Vui lòng thao tác lại");
+                MessageBox.Show("Có lỗi xảy ra. Vui lòng thao tác lại" + ex.Message);
             }
         }
 
