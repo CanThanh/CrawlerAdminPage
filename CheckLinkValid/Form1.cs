@@ -76,6 +76,10 @@ namespace CheckLinkValid
                         ListPageIndex.Add(i.ToString());
                     }
                 }
+                else
+                {
+                    ListPageIndex.Add(txtPageIndexAdmin.Text);
+                }
                 foreach (var item in ListPageIndex)
                 {
                     int iPageSize = 0;
@@ -265,6 +269,10 @@ namespace CheckLinkValid
                     {
                         ListPageIndex.Add(i.ToString());
                     }
+                }
+                else
+                {
+                    ListPageIndex.Add(txtPageIndex.Text);
                 }
                 foreach (var item in ListPageIndex)
                 {
