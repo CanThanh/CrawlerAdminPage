@@ -245,7 +245,7 @@ namespace CheckLinkValid
                         {
                             strUrl = txtUrl.Text + "/page/" + iPageSize;
                         }
-                        GetRapidgatorFileName(strUrl, "//h2[@class='entry-title']//a");
+                        GetRapidgatorFileName(strUrl, "//div[@class='entry-meta']//span[@class='posted-on']//a");
                     }
                 }
                 ListFileName.AddRange(ListLinkNotValid.Select(x => x.NameLinkCheck).ToList());

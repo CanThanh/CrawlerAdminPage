@@ -41,7 +41,7 @@ namespace CheckLinkValid
         private void InitChrome()
         {
             browser = new ChromiumWebBrowser(CommonConstants.RapidgatorLoginUrl);
-            browser.FrameLoadEnd += chrome_FrameLoadEnd;
+            //browser.FrameLoadEnd += chrome_FrameLoadEnd;
             pChrome.Controls.Add(browser);
             browser.Dock = DockStyle.Fill;
         }
