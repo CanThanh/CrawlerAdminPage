@@ -60,7 +60,22 @@ namespace CheckLinkValid
                 ListLinkUrl.Clear();
                 listBoxLinkNotValid.Items.Clear();
                 lblStartTime.Text = DateTime.Now.ToString();
-                List<string> ListPageIndex = txtPageIndexAdmin.Text.Split(',').ToList();
+                List<string> ListPageIndex = new List<string>();
+                if (txtPageIndex.Text.Contains(","))
+                {
+                    ListPageIndex.AddRange(txtPageIndexAdmin.Text.Split(',').ToList());
+                }
+                else if (txtPageIndex.Text.Contains("-"))
+                {
+                    var RangPageIndex = txtPageIndexAdmin.Text.Split('-').ToList();
+                    int minIndex = 0, maxIndex = 0;
+                    int.TryParse(RangPageIndex[0], out minIndex);
+                    int.TryParse(RangPageIndex[1], out maxIndex);
+                    for (int i = minIndex; i <= maxIndex; i++)
+                    {
+                        ListPageIndex.Add(i.ToString());
+                    }
+                }
                 foreach (var item in ListPageIndex)
                 {
                     int iPageSize = 0;
@@ -79,6 +94,13 @@ namespace CheckLinkValid
                         }
                         GetRapidgatorFileName(strUrl, "//div[@class='row-actions']//span[@class='view']//a");
                     }
+                }
+                lblEndTime.Text = DateTime.Now.ToString();
+                lblError.Text = ListLinkNotValid.Count + "/" + (ListLinkValid.Count + ListLinkNotValid.Count);
+                var index = 1;
+                foreach (var item in ListLinkNotValid)
+                {
+                    listBoxLinkNotValid.Items.Add(index++ + "\tId: " + item.ItemId + "\tRapidgator file name: " + item.NameLinkCheck);
                 }
                 ListFileName.AddRange(ListLinkNotValid.Select(x => x.NameLinkCheck).ToList());
                 MessageBox.Show("Đã hoàn thành");
@@ -228,7 +250,22 @@ namespace CheckLinkValid
                 listBoxLinkNotValid.Items.Clear();
                 ListLinkUrl.Clear();
                 lblStartTime.Text = DateTime.Now.ToString();
-                List<string> ListPageIndex = txtPageIndex.Text.Split(',').ToList();
+                List<string> ListPageIndex = new List<string>();
+                if (txtPageIndex.Text.Contains(","))
+                {
+                    ListPageIndex.AddRange(txtPageIndex.Text.Split(',').ToList());
+                }
+                else if (txtPageIndex.Text.Contains("-"))
+                {
+                    var RangPageIndex = txtPageIndex.Text.Split('-').ToList();
+                    int minIndex = 0, maxIndex = 0;
+                    int.TryParse(RangPageIndex[0], out minIndex);
+                    int.TryParse(RangPageIndex[1], out maxIndex);
+                    for (int i = minIndex; i <= maxIndex; i++)
+                    {
+                        ListPageIndex.Add(i.ToString());
+                    }
+                }
                 foreach (var item in ListPageIndex)
                 {
                     int iPageSize = 0;
@@ -247,6 +284,13 @@ namespace CheckLinkValid
                         }
                         GetRapidgatorFileName(strUrl, "//div[@class='entry-meta']//span[@class='posted-on']//a");
                     }
+                }
+                lblEndTime.Text = DateTime.Now.ToString();
+                lblError.Text = ListLinkNotValid.Count + "/" + (ListLinkValid.Count + ListLinkNotValid.Count);
+                var index = 1;
+                foreach (var item in ListLinkNotValid)
+                {
+                    listBoxLinkNotValid.Items.Add(index++ + "\tId: " + item.ItemId + "\tRapidgator file name: " + item.NameLinkCheck);
                 }
                 ListFileName.AddRange(ListLinkNotValid.Select(x => x.NameLinkCheck).ToList());
                 MessageBox.Show("Đã hoàn thành");
@@ -286,20 +330,13 @@ namespace CheckLinkValid
                 doc.LoadHtml(strHtml);
                 if (doc != null && doc.DocumentNode != null)
                 {
-                    var listItem = doc.DocumentNode.SelectNodes(strXPath);
+                    var listItem = doc.DocumentNode.SelectNodes(strXPath).ToList();
                     foreach (var item in listItem)
                     {
                         var url = item.GetAttributeValue("href", String.Empty);
                         CheckLinkValid(url);
                     }
                 }
-            }
-            lblEndTime.Text = DateTime.Now.ToString();
-            lblError.Text = ListLinkNotValid.Count + "/" + (ListLinkValid.Count + ListLinkNotValid.Count);
-            var index = 1;
-            foreach (var item in ListLinkNotValid)
-            {
-                listBoxLinkNotValid.Items.Add(index++ + "\tId: " + item.ItemId + "\tRapidgator file name: " + item.NameLinkCheck);
             }
         }
     }
