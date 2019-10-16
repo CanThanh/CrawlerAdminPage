@@ -100,25 +100,35 @@ namespace CheckLinkValid
                     HtmlAgilityPack.HtmlDocument doc = web.Load(url);
                     if(doc != null && doc.DocumentNode != null)
                     {
-                        var itemCheck = new ValidateLink();
-                        itemCheck.ItemLink = url;
                         var itemId = doc.DocumentNode.SelectSingleNode("//article").GetAttributeValue("id", "0");
-                        itemCheck.ItemId = int.Parse(itemId.Replace("post-", ""));
-                        itemCheck.ItemName = doc.DocumentNode.SelectSingleNode("//h1[@class='entry-title ']").InnerHtml;
-                        var tagA = doc.DocumentNode.SelectSingleNode("//div[@class='entry-content']//a");
-                        itemCheck.HrefLinkCheck = tagA.GetAttributeValue("href", "Not found");
-                        itemCheck.NameLinkCheck = tagA.InnerHtml;
-                        doc = web.Load(itemCheck.HrefLinkCheck);
-                        var strHtml = doc.DocumentNode.SelectSingleNode("//head/title").InnerHtml;
-                        if (strHtml.Contains(CommonConstants.TitleError))
+                        var IdItem = int.Parse(itemId.Replace("post-", ""));
+                        var itemName = doc.DocumentNode.SelectSingleNode("//h1[@class='entry-title ']").InnerHtml;
+                        //var tagA = doc.DocumentNode.SelectSingleNode("//div[@class='entry-content']//a");
+                        var ListTagA = doc.DocumentNode.SelectNodes("//div[@class='entry-content']//a").ToList();
+                        foreach (var tagA in ListTagA)
                         {
-                            itemCheck.IsValid = false;
-                            ListLinkNotValid.Add(itemCheck);
-                        }
-                        else
-                        {
-                            itemCheck.IsValid = true;
-                            ListLinkValid.Add(itemCheck);
+                            var itemCheck = new ValidateLink();
+                            itemCheck.ItemLink = url;
+                            itemCheck.ItemName = itemName;
+                            itemCheck.ItemId = IdItem;
+                            var href = tagA.GetAttributeValue("href", "Not found");
+                            if (href.ToLower().Contains("rapidgator"))
+                            {
+                                itemCheck.HrefLinkCheck = href;
+                                itemCheck.NameLinkCheck = tagA.InnerHtml;
+                                doc = web.Load(itemCheck.HrefLinkCheck);
+                                var strHtml = doc.DocumentNode.SelectSingleNode("//head/title").InnerHtml;
+                                if (strHtml.Contains(CommonConstants.TitleError))
+                                {
+                                    itemCheck.IsValid = false;
+                                    ListLinkNotValid.Add(itemCheck);
+                                }
+                                else
+                                {
+                                    itemCheck.IsValid = true;
+                                    ListLinkValid.Add(itemCheck);
+                                }
+                            }                          
                         }
                     }
                 }
