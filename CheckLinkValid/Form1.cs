@@ -104,7 +104,7 @@ namespace CheckLinkValid
                 var index = 1;
                 foreach (var item in ListLinkNotValid)
                 {
-                    txtFileNameNotValid.Text += index++ + "\tId: " + item.ItemId + "\tRapidgator file name: " + item.NameLinkCheck + "\n";
+                    txtFileNameNotValid.Text += item.NameLinkCheck + "\n";
                 }
                 ListFileName.AddRange(ListLinkNotValid.Select(x => x.NameLinkCheck).ToList());
                 MessageBox.Show("Đã hoàn thành");
@@ -230,7 +230,7 @@ namespace CheckLinkValid
                             if (!String.IsNullOrEmpty(line))
                             {
                                 ListFileName.Add(line);
-                                txtFileNameNotValid.Text += index++ + "\tRapidgator file name: " + line + "\n";
+                                txtFileNameNotValid.Text += line + "\n";
                             }
                         }
                     }
@@ -298,7 +298,7 @@ namespace CheckLinkValid
                 var index = 1;
                 foreach (var item in ListLinkNotValid)
                 {
-                    txtFileNameNotValid.Text += index++ + "\tId: " + item.ItemId + "\tRapidgator file name: " + item.NameLinkCheck + "\n";
+                    txtFileNameNotValid.Text +=  item.NameLinkCheck + "\n";
                 }
                 ListFileName.AddRange(ListLinkNotValid.Select(x => x.NameLinkCheck).ToList());
                 MessageBox.Show("Đã hoàn thành");
