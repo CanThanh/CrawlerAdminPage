@@ -58,7 +58,7 @@ namespace CheckLinkValid
                 UrlChecked.Clear();
                 ListFileName.Clear();
                 ListLinkUrl.Clear();
-                listBoxLinkNotValid.Items.Clear();
+                txtFileNameNotValid.Text = String.Empty;
                 lblStartTime.Text = DateTime.Now.ToString();
                 List<string> ListPageIndex = new List<string>();
                 if (txtPageIndex.Text.Contains(","))
@@ -104,7 +104,7 @@ namespace CheckLinkValid
                 var index = 1;
                 foreach (var item in ListLinkNotValid)
                 {
-                    listBoxLinkNotValid.Items.Add(index++ + "\tId: " + item.ItemId + "\tRapidgator file name: " + item.NameLinkCheck);
+                    txtFileNameNotValid.Text += index++ + "\tId: " + item.ItemId + "\tRapidgator file name: " + item.NameLinkCheck + "\n";
                 }
                 ListFileName.AddRange(ListLinkNotValid.Select(x => x.NameLinkCheck).ToList());
                 MessageBox.Show("Đã hoàn thành");
@@ -220,7 +220,7 @@ namespace CheckLinkValid
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
                     var fileStream = new FileStream(openFileDialog.FileName, FileMode.Open, FileAccess.Read);
-                    listBoxLinkNotValid.Items.Clear();
+                    txtFileNameNotValid.Text = String.Empty;
                     var index = 1;
                     using (var streamReader = new StreamReader(fileStream, Encoding.UTF8))
                     {
@@ -230,7 +230,7 @@ namespace CheckLinkValid
                             if (!String.IsNullOrEmpty(line))
                             {
                                 ListFileName.Add(line);
-                                listBoxLinkNotValid.Items.Add(index++ + "\tRapidgator file name: " + line);
+                                txtFileNameNotValid.Text += index++ + "\tRapidgator file name: " + line + "\n";
                             }
                         }
                     }
@@ -251,7 +251,7 @@ namespace CheckLinkValid
                 ListLinkNotValid.Clear();
                 UrlChecked.Clear();
                 ListFileName.Clear();
-                listBoxLinkNotValid.Items.Clear();
+                txtFileNameNotValid.Text = String.Empty;
                 ListLinkUrl.Clear();
                 lblStartTime.Text = DateTime.Now.ToString();
                 List<string> ListPageIndex = new List<string>();
@@ -298,7 +298,7 @@ namespace CheckLinkValid
                 var index = 1;
                 foreach (var item in ListLinkNotValid)
                 {
-                    listBoxLinkNotValid.Items.Add(index++ + "\tId: " + item.ItemId + "\tRapidgator file name: " + item.NameLinkCheck);
+                    txtFileNameNotValid.Text += index++ + "\tId: " + item.ItemId + "\tRapidgator file name: " + item.NameLinkCheck + "\n";
                 }
                 ListFileName.AddRange(ListLinkNotValid.Select(x => x.NameLinkCheck).ToList());
                 MessageBox.Show("Đã hoàn thành");
