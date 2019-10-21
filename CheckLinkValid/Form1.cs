@@ -101,7 +101,7 @@ namespace CheckLinkValid
                 }
                 lblEndTime.Text = DateTime.Now.ToString();
                 lblError.Text = ListLinkNotValid.Count + "/" + (ListLinkValid.Count + ListLinkNotValid.Count);
-                var index = 1;
+                //var index = 1;
                 foreach (var item in ListLinkNotValid)
                 {
                     txtFileNameNotValid.Text += item.NameLinkCheck + "\n";
@@ -221,7 +221,7 @@ namespace CheckLinkValid
                 {
                     var fileStream = new FileStream(openFileDialog.FileName, FileMode.Open, FileAccess.Read);
                     txtFileNameNotValid.Text = String.Empty;
-                    var index = 1;
+                    //var index = 1;
                     using (var streamReader = new StreamReader(fileStream, Encoding.UTF8))
                     {
                         string line;
@@ -295,7 +295,7 @@ namespace CheckLinkValid
                 }
                 lblEndTime.Text = DateTime.Now.ToString();
                 lblError.Text = ListLinkNotValid.Count + "/" + (ListLinkValid.Count + ListLinkNotValid.Count);
-                var index = 1;
+                //var index = 1;
                 foreach (var item in ListLinkNotValid)
                 {
                     txtFileNameNotValid.Text +=  item.NameLinkCheck + "\n";
