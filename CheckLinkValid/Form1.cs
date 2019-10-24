@@ -23,6 +23,7 @@ namespace CheckLinkValid
         private List<string> ListFileName;
         private List<string> ListLinkUrl;
         private ChromiumWebBrowser browser;
+        private string strUrlAdminOld;
         public Form1()
         {
             InitializeComponent();
@@ -35,6 +36,7 @@ namespace CheckLinkValid
             txtUrlAdmin.Text = String.Format(CommonConstants.AdminUrl,1);
             txtUrl.Text = String.Format(CommonConstants.Url, 1); ;
             browser = new ChromiumWebBrowser(txtUrlAdmin.Text);
+            strUrlAdminOld = txtUrlAdmin.Text;
             //browser.FrameLoadEnd += chrome_FrameLoadEnd;
             pChrome.Controls.Add(browser);
             browser.Dock = DockStyle.Fill;
@@ -345,6 +347,20 @@ namespace CheckLinkValid
                         CheckLinkValid(url);
                     }
                 }
+            }
+        }
+
+        private void txtUrlAdmin_Enter(object sender, EventArgs e)
+        {
+            strUrlAdminOld = txtUrlAdmin.Text;
+        }
+
+        private void txtUrlAdmin_Leave(object sender, EventArgs e)
+        {
+            var strUrlAdminNew = txtUrlAdmin.Text;
+            if (!strUrlAdminOld.Trim().ToLower().Equals(strUrlAdminNew.Trim().ToLower()))
+            {
+                browser.Load(strUrlAdminNew);
             }
         }
     }
