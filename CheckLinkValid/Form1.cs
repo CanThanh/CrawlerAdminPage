@@ -51,6 +51,7 @@ namespace CheckLinkValid
 
         private void btnCheck_Click(object sender, EventArgs e)
         {
+            pChrome.Enabled = false;
             try
             {
                 ListLinkValid.Clear();
@@ -96,7 +97,7 @@ namespace CheckLinkValid
                         {
                             strUrl = txtUrlAdmin.Text + "?paged=" + iPageSize;
                         }
-                        GetRapidgatorFileName(strUrl, "//div[@class='row-actions']//span[@class='view']//a");
+                        GetRapidgatorFileName(strUrl, "//div[@class='row-actions']//span[@class='edit']//a");
                     }
                 }
                 lblEndTime.Text = DateTime.Now.ToString();
@@ -112,7 +113,11 @@ namespace CheckLinkValid
             catch (Exception ex)
             {
                 MessageBox.Show("Có lỗi xảy ra. Vui lòng kiểm tra lại" + ex.Message);
-            }                       
+            }
+            finally
+            {
+                pChrome.Enabled = true;
+            }          
         }
 
         private void CheckLinkValid(string url)
@@ -245,6 +250,7 @@ namespace CheckLinkValid
 
         private void btnCheckLink_Click(object sender, EventArgs e)
         {
+            pChrome.Enabled = false;
             try
             {
                 ListLinkValid.Clear();
@@ -306,6 +312,10 @@ namespace CheckLinkValid
             catch (Exception ex)
             {
                 MessageBox.Show("Có lỗi xảy ra. Vui lòng kiểm tra lại" + ex.Message);
+            }
+            finally
+            {
+                pChrome.Enabled = true;
             }           
         }
 
@@ -342,9 +352,73 @@ namespace CheckLinkValid
                     foreach (var item in listItem)
                     {
                         var url = item.GetAttributeValue("href", String.Empty);
-                        CheckLinkValid(url);
+                        if (url.Contains("&amp;"))
+                        {
+                            url = url.Replace("&amp;", "&");
+                        }
+                        if(tabControl1.SelectedIndex == 0)
+                        {
+                            CheckLinkValidAdminPage(url);
+                        }
+                        else if(tabControl1.SelectedIndex == 1)
+                        {
+                            CheckLinkValid(url);
+                        } 
                     }
                 }
+            }
+        }
+
+        private void CheckLinkValidAdminPage(string url)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(url) && !UrlChecked.Contains(url))
+                {
+                    UrlChecked.Add(url);
+                    browser.Load(url);
+                    Thread.Sleep(5000);
+                    string strHtml = GetHTMLFromWebBrowser();
+                    HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
+                    doc.LoadHtml(strHtml);
+                    if (doc != null && doc.DocumentNode != null)
+                    {
+                        var textArea = doc.DocumentNode.SelectSingleNode("//textarea[@class='wp-editor-area']").InnerHtml;
+                        textArea = textArea.Replace("&lt;", "<").Replace("&gt;", ">");
+                        doc.LoadHtml(textArea);
+                        var listTagA = doc.DocumentNode.SelectNodes("//a").ToList();
+                        HtmlWeb web = new HtmlWeb();
+                        foreach (var tagA in listTagA)
+                        {
+                            var itemCheck = new ValidateLink();
+                            itemCheck.ItemLink = url;
+                            //itemCheck.ItemName = itemName;
+                            //itemCheck.ItemId = IdItem;
+                            var href = tagA.GetAttributeValue("href", "Not found");
+                            if (href.ToLower().Contains("rapidgator"))
+                            {
+                                itemCheck.HrefLinkCheck = href;
+                                itemCheck.NameLinkCheck = tagA.InnerHtml;
+                                doc = web.Load(itemCheck.HrefLinkCheck);
+                                var strHtmlRapidgator = doc.DocumentNode.SelectSingleNode("//head/title").InnerHtml;
+                                if (strHtmlRapidgator.Contains(CommonConstants.TitleError))
+                                {
+                                    itemCheck.IsValid = false;
+                                    ListLinkNotValid.Add(itemCheck);
+                                }
+                                else
+                                {
+                                    itemCheck.IsValid = true;
+                                    ListLinkValid.Add(itemCheck);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
             }
         }
     }
