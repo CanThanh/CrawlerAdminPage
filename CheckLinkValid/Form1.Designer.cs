@@ -85,6 +85,8 @@
             this.txtUrlAdmin.Size = new System.Drawing.Size(328, 20);
             this.txtUrlAdmin.TabIndex = 3;
             this.txtUrlAdmin.Text = "http://blogpp.xyz/wp-admin/edit.php?paged=1";
+            this.txtUrlAdmin.Enter += new System.EventHandler(this.txtUrlAdmin_Enter);
+            this.txtUrlAdmin.Leave += new System.EventHandler(this.txtUrlAdmin_Leave);
             // 
             // label2
             // 
